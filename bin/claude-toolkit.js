@@ -34,14 +34,14 @@ function copyDir(src, dest) {
   }
 }
 
-function install() {
+function update() {
   const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
   const backupDir = path.join(CLAUDE_DIR, 'workflow-backups', timestamp);
 
   fs.mkdirSync(AGENTS_DIR, { recursive: true });
   fs.mkdirSync(SKILLS_DIR, { recursive: true });
 
-  // The installer owns only this namespaced agent directory and workflow-* skills.
+  // This command owns only this namespaced agent directory and workflow-* skills.
   backupIfPresent(AGENTS_DIR, path.join('agents', 'workflow'), backupDir);
   fs.mkdirSync(AGENTS_DIR, { recursive: true });
   for (const file of fs.readdirSync(path.join(PACKAGE_ROOT, 'agents'))) {
@@ -60,7 +60,7 @@ function install() {
 
   fs.writeFileSync(VERSION_FILE, `${pkgVersion()}\n`);
 
-  console.log(`claude-toolkit ${pkgVersion()} installed.`);
+  console.log(`claude-toolkit ${pkgVersion()} synced to ~/.claude.`);
   console.log(`Agents: ${AGENTS_DIR}`);
   console.log(`Skills: ${path.join(SKILLS_DIR, 'workflow-*')}`);
   if (fs.existsSync(backupDir)) {
@@ -75,7 +75,7 @@ function status() {
   console.log(`Package version available: ${packaged}`);
   console.log(`Installed into ~/.claude: ${installed || 'not installed'}`);
   if (installed !== packaged) {
-    console.log('Out of date. Run `claude-toolkit install` to sync.');
+    console.log('Out of date. Run `claude-toolkit update` to sync.');
     process.exitCode = 1;
   } else {
     console.log('Up to date.');
@@ -83,9 +83,9 @@ function status() {
 }
 
 const command = process.argv[2];
-if (command === 'install') install();
+if (command === 'update' || command === 'install') update();
 else if (command === 'status') status();
 else {
-  console.error('Usage: claude-toolkit <install|status>');
+  console.error('Usage: claude-toolkit <update|status>');
   process.exit(1);
 }

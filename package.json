@@ -1,6 +1,6 @@
 {
   "name": "@damian.diego/claude-toolkit",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Repo-agnostic Claude Code agents, skills, shared working rules, and CLI.",
   "repository": {
     "type": "git",
@@ -22,6 +22,6 @@
     "README.md"
   ],
   "scripts": {
-    "postinstall": "node ./bin/claude-toolkit.js install"
+    "postinstall": "node ./bin/claude-toolkit.js update"
   }
 }
