@@ -22,7 +22,7 @@ pnpm 10+ blocks dependency build scripts by default; if `postinstall` doesn't ru
 pnpm approve-builds
 ```
 
-To update: bump the dependency (`pnpm update @damian.diego/claude-toolkit`) and reinstall — `postinstall` re-syncs `~/.claude` automatically. Run `npx claude-toolkit status` anytime to check whether the copy in `~/.claude` matches the version currently in `node_modules`.
+To update: `pnpm add -D @damian.diego/claude-toolkit@latest` (plain `pnpm update` won't cross a `0.x` minor bump under semver's caret rules while this package is pre-1.0) — `postinstall` re-syncs `~/.claude` automatically. Run `npx claude-toolkit status` anytime to check whether the copy in `~/.claude` matches the version currently in `node_modules`.
 
 ### Option B: standalone clone
 
