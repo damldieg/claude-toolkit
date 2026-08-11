@@ -4,24 +4,35 @@ A small, repository-agnostic Claude Code workflow for all local projects. It pro
 
 ## Install
 
-1. Create a private GitHub repository and push this folder's contents to it.
-2. Clone it to a stable local location:
+Both paths run the same installer (`bin/claude-workflow.js`), which changes only `~/.claude/agents/workflow/` and `~/.claude/skills/workflow-*`. Before replacing a previous version, it moves that version into `~/.claude/workflow-backups/`. Restart Claude Code only when its `~/.claude/agents` or `~/.claude/skills` directory did not exist when the session started.
 
-   ```bash
-   git clone git@github.com:YOUR-USER/claude-workflow.git ~/.config/claude-workflow
-   ```
+### Option A: standalone clone
 
-3. Install it:
+For a machine-wide install independent of any single project:
 
-   ```bash
-   cd ~/.config/claude-workflow
-   chmod +x install.sh
-   ./install.sh
-   ```
+```bash
+git clone https://github.com/YOUR-USER/claude-workflow.git ~/.config/claude-workflow
+cd ~/.config/claude-workflow
+./install.sh
+```
 
-The installer changes only `~/.claude/agents/workflow/` and `~/.claude/skills/workflow-*`. Before replacing a previous version, it moves that version into `~/.claude/workflow-backups/`.
+To update: `git pull` inside the clone, then `./install.sh` again.
 
-To update, run `git pull` inside the clone, then `./install.sh` again. Restart Claude Code only when its `~/.claude/agents` or `~/.claude/skills` directory did not exist when the session started.
+### Option B: per-project devDependency (recommended)
+
+Add it as a `devDependency` pointing at the private repo, so every `npm install`/`pnpm install` keeps `~/.claude` in sync automatically via a `postinstall` hook:
+
+```bash
+pnpm add -D github:YOUR-USER/claude-workflow#main
+```
+
+pnpm blocks dependency build scripts by default; approve this one once per project:
+
+```bash
+pnpm approve-builds
+```
+
+To update: bump the dependency (`pnpm update claude-workflow`) and reinstall — `postinstall` re-syncs `~/.claude` automatically. Run `npx claude-workflow status` anytime to check whether the copy in `~/.claude` matches the version currently in `node_modules`.
 
 ## Use
 

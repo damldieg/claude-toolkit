@@ -1,0 +1,19 @@
+{
+  "name": "claude-workflow",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Repo-agnostic Claude Code agents, skills, and shared working rules.",
+  "bin": {
+    "claude-workflow": "./bin/claude-workflow.js"
+  },
+  "files": [
+    "bin",
+    "agents",
+    "skills",
+    "GUIDELINES.md",
+    "README.md"
+  ],
+  "scripts": {
+    "postinstall": "node ./bin/claude-workflow.js install"
+  }
+}
