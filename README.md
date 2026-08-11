@@ -31,10 +31,10 @@ For a machine-wide install independent of any single project:
 ```bash
 git clone https://github.com/damldieg/claude-toolkit.git ~/.config/claude-toolkit
 cd ~/.config/claude-toolkit
-./install.sh
+./scripts/install.sh
 ```
 
-To update: `git pull` inside the clone, then `./install.sh` again.
+To update: `git pull` inside the clone, then `./scripts/install.sh` again.
 
 ## Use
 
