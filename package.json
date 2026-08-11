@@ -11,7 +11,7 @@
     "access": "public"
   },
   "bin": {
-    "claude-toolkit": "./bin/claude-toolkit.js"
+    "claude-toolkit": "bin/claude-toolkit.js"
   },
   "files": [
     "bin",
