@@ -9,7 +9,7 @@ const PACKAGE_ROOT = path.join(__dirname, '..');
 const CLAUDE_DIR = path.join(os.homedir(), '.claude');
 const AGENTS_DIR = path.join(CLAUDE_DIR, 'agents', 'workflow');
 const SKILLS_DIR = path.join(CLAUDE_DIR, 'skills');
-const VERSION_FILE = path.join(AGENTS_DIR, '.claude-workflow-version');
+const VERSION_FILE = path.join(AGENTS_DIR, '.claude-toolkit-version');
 
 function pkgVersion() {
   const pkg = JSON.parse(fs.readFileSync(path.join(PACKAGE_ROOT, 'package.json'), 'utf8'));
@@ -60,7 +60,7 @@ function install() {
 
   fs.writeFileSync(VERSION_FILE, `${pkgVersion()}\n`);
 
-  console.log(`claude-workflow ${pkgVersion()} installed.`);
+  console.log(`claude-toolkit ${pkgVersion()} installed.`);
   console.log(`Agents: ${AGENTS_DIR}`);
   console.log(`Skills: ${path.join(SKILLS_DIR, 'workflow-*')}`);
   if (fs.existsSync(backupDir)) {
@@ -75,7 +75,7 @@ function status() {
   console.log(`Package version available: ${packaged}`);
   console.log(`Installed into ~/.claude: ${installed || 'not installed'}`);
   if (installed !== packaged) {
-    console.log('Out of date. Run `claude-workflow install` to sync.');
+    console.log('Out of date. Run `claude-toolkit install` to sync.');
     process.exitCode = 1;
   } else {
     console.log('Up to date.');
@@ -86,6 +86,6 @@ const command = process.argv[2];
 if (command === 'install') install();
 else if (command === 'status') status();
 else {
-  console.error('Usage: claude-workflow <install|status>');
+  console.error('Usage: claude-toolkit <install|status>');
   process.exit(1);
 }

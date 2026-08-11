@@ -1,10 +1,17 @@
 {
-  "name": "claude-workflow",
+  "name": "@damian.diego/claude-toolkit",
   "version": "0.1.0",
-  "private": true,
-  "description": "Repo-agnostic Claude Code agents, skills, and shared working rules.",
+  "description": "Repo-agnostic Claude Code agents, skills, shared working rules, and CLI.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/damldieg/claude-toolkit.git"
+  },
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "bin": {
-    "claude-workflow": "./bin/claude-workflow.js"
+    "claude-toolkit": "./bin/claude-toolkit.js"
   },
   "files": [
     "bin",
@@ -14,6 +21,6 @@
     "README.md"
   ],
   "scripts": {
-    "postinstall": "node ./bin/claude-workflow.js install"
+    "postinstall": "node ./bin/claude-toolkit.js install"
   }
 }

@@ -1,6 +1,6 @@
 # Working rules and effort routing
 
-Shared, project-agnostic defaults for working with Claude Code via the claude-workflow agents and skills. A project's own `CLAUDE.md` should reference this file and add only what is specific to that project.
+Shared, project-agnostic defaults for working with Claude Code via the claude-toolkit agents and skills. A project's own `CLAUDE.md` should reference this file and add only what is specific to that project.
 
 ## Working rules
 
