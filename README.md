@@ -29,6 +29,14 @@ Manual skills: `/workflow-checkpoint`, `/workflow-audit-context`, `/workflow-git
 
 Use `workflow-pr-reviewer` for a read-only PR/diff review. The other agents are routed by effort: `workflow-maintenance-tiny` (Haiku/low), `workflow-feature-normal` (Sonnet/medium), `workflow-systems-deep` (Sonnet/high), and `workflow-architecture-review` (Opus/xhigh).
 
-Keep each project's own rules in its root `CLAUDE.md`. If a project uses milestones, add its own `docs/PROJECT_STATE.md`; `/workflow-checkpoint` will not create or alter application files automatically.
+## Shared working rules
+
+`GUIDELINES.md` in this repo holds the project-agnostic working rules, the effort-routing table, and the milestone definition. Reference it from a project's root `CLAUDE.md` instead of repeating it, e.g.:
+
+```markdown
+Shared working rules, effort routing, and milestone policy: `~/.config/claude-workflow/GUIDELINES.md`.
+```
+
+Keep each project's own rules in its root `CLAUDE.md`, limited to what is actually specific to that project. If a project uses milestones, add its own `docs/PROJECT_STATE.md`; `/workflow-checkpoint` will not create or alter application files automatically.
 
 No skill automatically compacts context, commits, pushes, rebases, opens PRs, or changes remote state.
