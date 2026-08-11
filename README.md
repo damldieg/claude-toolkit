@@ -16,7 +16,7 @@ Add it as a `devDependency`, so every `npm install`/`pnpm install` keeps `~/.cla
 pnpm add -D @damian.diego/claude-toolkit
 ```
 
-pnpm blocks dependency build scripts by default; approve this one once per project:
+pnpm 10+ blocks dependency build scripts by default; if `postinstall` doesn't run, approve it once per project:
 
 ```bash
 pnpm approve-builds
