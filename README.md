@@ -36,6 +36,15 @@ cd ~/.config/claude-toolkit
 
 To update: `git pull` inside the clone, then `./scripts/install.sh` again.
 
+### CLI on your PATH
+
+Both `claude-toolkit` and the shorter `ctcli` alias resolve to the same binary. Install globally to get either without `npx`:
+
+```bash
+npm install -g @damian.diego/claude-toolkit
+ctcli status
+```
+
 ## Use
 
 Manual skills: `/workflow-checkpoint`, `/workflow-audit-context`, `/workflow-git-status`, `/workflow-commit`, `/workflow-push`, `/workflow-rebase`, and `/workflow-prepare-pr`.
