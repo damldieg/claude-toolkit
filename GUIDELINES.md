@@ -6,7 +6,10 @@ Shared, project-agnostic defaults for working with Claude Code via the claude-to
 
 - Build the smallest coherent increment that fulfils the request. Do not invent a roadmap, framework, or abstraction without a concrete need.
 - Inspect relevant code before editing it. Preserve existing conventions and keep changes local.
-- Run the narrowest relevant validation after a change; report what was not run.
+- Match validation to the size of the step, the same way `docs/PROJECT_STATE.md` updates are reserved for milestones rather than every task:
+  - Small/incremental step: narrow checks only — unit test(s) for the touched file, type-check, lint. No manual QA, no e2e, for a step this size.
+  - Milestone close: full validation — the complete test suite, plus `ctk-web-qa` (or equivalent manual/browser QA) if the change is user-facing.
+  - Report what was not run.
 - Do not modify dependencies, project-wide tooling, generated assets, or public APIs unless the task requires it.
 - Ask before destructive actions, migrations, large refactors, or decisions that materially change product direction.
 - Keep the project's state file (e.g. `docs/PROJECT_STATE.md`) concise and factual. Update it only at a completed milestone, a material decision, or when `/ctk-checkpoint` is requested. Do not update it after every small task.
