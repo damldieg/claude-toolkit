@@ -1,18 +1,18 @@
 ---
 name: release
-description: Cut a new version of claude-toolkit itself (this repo) and trigger the CI publish to npm.
+description: Add a changeset for a change about to land on main, or explain the release flow for claude-toolkit itself.
 disable-model-invocation: true
 allowed-tools: Read Edit Bash Grep
 ---
 
 Maintainer-only. This skill is local to the claude-toolkit repo and is never packaged or shipped to consumers (`package.json`'s `files` field does not include `.claude/`).
 
-1. Inspect `git status` and `git log` since the last `vX.Y.Z` tag to see what actually changed. Stop and ask if the working tree is dirty with unrelated changes.
-2. Decide the version bump (patch/minor/major) from the nature of the changes; confirm with the user if ambiguous.
-3. Update `"version"` in `package.json` to the new value. Do not hand-edit anything else.
-4. Commit with a concise message (e.g. `chore(release): vX.Y.Z`).
-5. Create an annotated tag `vX.Y.Z` on that commit.
-6. Push the commit and the tag: `git push && git push origin vX.Y.Z`.
-7. Report the tag pushed and remind the user that GitHub Actions (`.github/workflows/publish.yml`) will publish to npm automatically; it needs the `NPM_TOKEN` repo secret (an npm Automation/Granular token with the 2FA-bypass option, ideally scoped to this package) to be configured once in the GitHub repo settings.
+Release is fully automated via `@changesets/cli` and `.github/workflows/release.yml` (`changesets/action`) — there is no manual version bump, tag, or `npm publish` step anymore.
 
-Never publish to npm directly from this machine as part of this skill; publishing is CI's job.
+1. For a change that should ship, add a changeset before/alongside the commit: `npx changeset add` (interactive: pick bump type, write a one-line summary) or `npx changeset add --empty` for changes that don't need a release. Commit the generated `.changeset/*.md` file with the change.
+2. On push to `main`, the Release workflow opens/updates a "Version Packages" PR that bundles all pending changesets into a version bump and `CHANGELOG.md` entry. Do not hand-edit `package.json`'s version or `CHANGELOG.md` — they're generated.
+3. Merging that PR triggers the same workflow to run `npm run release` (`changeset publish`), which publishes to npm and pushes the version tag. Nothing further to do.
+
+Requires the `NPM_TOKEN` repo secret (already configured for the previous flow) and the workflow's own `contents: write` / `pull-requests: write` permissions for the default `GITHUB_TOKEN` — no separate PAT needed unless the repo's default token permissions have been restricted to read-only at the org level.
+
+Never publish to npm directly from this machine; publishing is CI's job.

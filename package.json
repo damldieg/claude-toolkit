@@ -18,10 +18,16 @@
     "bin",
     "agents",
     "skills",
+    "templates",
     "GUIDELINES.md",
     "README.md"
   ],
   "scripts": {
-    "postinstall": "node ./bin/claude-toolkit.js update"
+    "postinstall": "node ./bin/claude-toolkit.js update",
+    "version-packages": "changeset version",
+    "release": "changeset publish"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^3.0.0"
   }
 }
