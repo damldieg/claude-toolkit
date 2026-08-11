@@ -1,6 +1,6 @@
 {
   "name": "@damian.diego/claude-toolkit",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Repo-agnostic Claude Code agents, skills, shared working rules, and CLI.",
   "repository": {
     "type": "git",
