@@ -1,5 +1,5 @@
 ---
-name: workflow-maintenance-tiny
+name: ctk-maintenance-tiny
 description: Use for short, low-risk maintenance: targeted file discovery, a narrow diff/check, concise documentation, or project-state maintenance. Do not use for feature implementation or complex debugging.
 tools: Read, Glob, Grep, Bash, Edit, Write
 model: haiku

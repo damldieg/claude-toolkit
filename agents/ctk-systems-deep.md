@@ -1,5 +1,5 @@
 ---
-name: workflow-systems-deep
+name: ctk-systems-deep
 description: Use for difficult reproducible bugs, performance issues, cross-cutting systems, complex state/lifecycle problems, or risky refactors that need diagnosis and validation.
 model: sonnet
 effort: high

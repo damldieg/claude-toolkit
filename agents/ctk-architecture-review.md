@@ -1,5 +1,5 @@
 ---
-name: workflow-architecture-review
+name: ctk-architecture-review
 description: Use before consequential architectural decisions, foundational systems, data shapes, framework boundaries, major refactors, or choices expensive to reverse. Read-only; recommend rather than implement.
 tools: Read, Glob, Grep, Bash
 model: opus

@@ -16,7 +16,7 @@ function pkgVersion() {
 // Resolve where "update" should write. Default is project-scoped: each
 // project that depends on this package gets its own `<project>/.claude`,
 // vendored and git-tracked, so different projects can be on different
-// versions and add project-specific skills alongside the workflow-* base.
+// versions and add project-specific skills alongside the ctk-* base.
 // Falls back to the global `~/.claude` for the two cases where there is no
 // consuming project: `npm install -g` (npm sets npm_config_global=true),
 // and running this CLI from inside its own cloned repo (the standalone
@@ -54,9 +54,31 @@ function copyDir(src, dest) {
   }
 }
 
+// Names shipped under the old `workflow-*` prefix (pre-0.6.0), kept here only
+// so `update()` can clean up orphaned copies left behind by that naming.
+const LEGACY_WORKFLOW_SKILLS = [
+  'workflow-audit-context', 'workflow-checkpoint', 'workflow-commit',
+  'workflow-git-status', 'workflow-init', 'workflow-prepare-pr',
+  'workflow-push', 'workflow-rebase',
+];
+
+function migrateLegacyWorkflowNaming(claudeDir, skillsDir, backup, backupDir) {
+  const legacyAgentsDir = path.join(claudeDir, 'agents', 'workflow');
+  if (fs.existsSync(legacyAgentsDir)) {
+    if (backup) backupIfPresent(legacyAgentsDir, path.join('agents', 'workflow'), backupDir);
+    fs.rmSync(legacyAgentsDir, { recursive: true, force: true });
+  }
+  for (const skillName of LEGACY_WORKFLOW_SKILLS) {
+    const target = path.join(skillsDir, skillName);
+    if (!fs.existsSync(target)) continue;
+    if (backup) backupIfPresent(target, path.join('skills', skillName), backupDir);
+    fs.rmSync(target, { recursive: true, force: true });
+  }
+}
+
 function update() {
   const { claudeDir, scope, backup } = resolveTarget();
-  const agentsDir = path.join(claudeDir, 'agents', 'workflow');
+  const agentsDir = path.join(claudeDir, 'agents', 'ctk');
   const skillsDir = path.join(claudeDir, 'skills');
   const versionFile = path.join(agentsDir, '.claude-toolkit-version');
   const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
@@ -65,8 +87,13 @@ function update() {
   fs.mkdirSync(agentsDir, { recursive: true });
   fs.mkdirSync(skillsDir, { recursive: true });
 
-  // This command owns only this namespaced agent directory and workflow-* skills.
-  if (backup) backupIfPresent(agentsDir, path.join('agents', 'workflow'), backupDir);
+  // Renamed from `workflow-*` to `ctk-*` in 0.6.0 to avoid colliding with
+  // other tools' generically-named skills/agents; drop any leftovers from
+  // the old prefix (this command has always owned them exclusively).
+  migrateLegacyWorkflowNaming(claudeDir, skillsDir, backup, backupDir);
+
+  // This command owns only this namespaced agent directory and ctk-* skills.
+  if (backup) backupIfPresent(agentsDir, path.join('agents', 'ctk'), backupDir);
   fs.mkdirSync(agentsDir, { recursive: true });
   for (const file of fs.readdirSync(path.join(PACKAGE_ROOT, 'agents'))) {
     if (file.endsWith('.md')) {
@@ -76,7 +103,7 @@ function update() {
 
   const skillsSrc = path.join(PACKAGE_ROOT, 'skills');
   for (const skillName of fs.readdirSync(skillsSrc)) {
-    if (!skillName.startsWith('workflow-')) continue;
+    if (!skillName.startsWith('ctk-')) continue;
     const target = path.join(skillsDir, skillName);
     if (backup) backupIfPresent(target, path.join('skills', skillName), backupDir);
     copyDir(path.join(skillsSrc, skillName), target);
@@ -86,19 +113,19 @@ function update() {
 
   console.log(`claude-toolkit ${pkgVersion()} synced (${scope}).`);
   console.log(`Agents: ${agentsDir}`);
-  console.log(`Skills: ${path.join(skillsDir, 'workflow-*')}`);
+  console.log(`Skills: ${path.join(skillsDir, 'ctk-*')}`);
   if (backup && fs.existsSync(backupDir)) {
     console.log(`Previous workflow files were backed up to: ${backupDir}`);
   }
   if (!backup) {
-    console.log('Project-scoped: commit .claude/agents/workflow and .claude/skills/workflow-* like any other vendored file. Add project-specific skills alongside them under different names.');
+    console.log('Project-scoped: commit .claude/agents/ctk and .claude/skills/ctk-* like any other vendored file. Add project-specific skills alongside them under different names (avoid the ctk- prefix, reserved for this toolkit).');
   }
   console.log('Restart Claude Code if its agents/skills directory for this scope did not exist when the current session started.');
 }
 
 function status() {
   const { claudeDir, scope } = resolveTarget();
-  const agentsDir = path.join(claudeDir, 'agents', 'workflow');
+  const agentsDir = path.join(claudeDir, 'agents', 'ctk');
   const versionFile = path.join(agentsDir, '.claude-toolkit-version');
   const packaged = pkgVersion();
   const installed = fs.existsSync(versionFile) ? fs.readFileSync(versionFile, 'utf8').trim() : null;

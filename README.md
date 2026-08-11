@@ -1,6 +1,6 @@
 # Claude Toolkit
 
-A small, repository-agnostic Claude Code toolkit for all local projects: cost-aware agents, milestone/audit skills, safe manual Git workflows, a read-only PR reviewer, shared working rules, and a CLI to install/update them. It contains no project instructions, framework assumptions, or application code.
+A small, repository-agnostic Claude Code toolkit for all local projects: cost-aware agents, milestone/audit skills, safe manual Git workflows, a read-only PR reviewer, meta-skills for scaffolding project-specific skills/agents, shared working rules, and a CLI to install/update them. It contains no project instructions, framework assumptions, or application code.
 
 Published as [`@damian.diego/claude-toolkit`](https://www.npmjs.com/package/@damian.diego/claude-toolkit).
 
@@ -8,7 +8,7 @@ Published as [`@damian.diego/claude-toolkit`](https://www.npmjs.com/package/@dam
 
 ### Option A: per-project devDependency (recommended, default scope)
 
-Add it as a `devDependency`. A `postinstall` hook then syncs `<project>/.claude/agents/workflow/` and `<project>/.claude/skills/workflow-*` — vendored into that project, not your machine's `~/.claude`. Commit them like any other vendored file; add project-specific skills alongside them under different names.
+Add it as a `devDependency`. A `postinstall` hook then syncs `<project>/.claude/agents/ctk/` and `<project>/.claude/skills/ctk-*` — vendored into that project, not your machine's `~/.claude`. Commit them like any other vendored file; add project-specific skills alongside them under different names (avoid the `ctk-` prefix, reserved for this toolkit).
 
 ```bash
 pnpm add -D @damian.diego/claude-toolkit
@@ -41,11 +41,13 @@ npm 11+ blocks lifecycle scripts for global installs too until approved — same
 
 ## Use
 
-Manual skills: `/workflow-checkpoint`, `/workflow-audit-context`, `/workflow-git-status`, `/workflow-commit`, `/workflow-push`, `/workflow-rebase`, and `/workflow-prepare-pr`.
+Manual skills: `/ctk-checkpoint`, `/ctk-audit-context`, `/ctk-git-status`, `/ctk-commit`, `/ctk-push`, `/ctk-rebase`, and `/ctk-prepare-pr`.
 
-`workflow-init` is the one skill Claude may run on its own judgment, without being asked: the first time it works in a project that has this toolkit installed but whose `CLAUDE.md` doesn't yet reference `GUIDELINES.md`, it reads both files and proposes wiring the project in, consolidating duplicated generic rules and keeping project-specific ones. It still confirms before writing a non-trivial merge.
+`/ctk-add-skill` and `/ctk-add-agent` scaffold a new project-specific skill or subagent (into that project's own `.claude/skills/` or `.claude/agents/`, never the `ctk-*` namespace) following current Claude Code best practices for frontmatter, tool scoping, and description/trigger design.
 
-Use `workflow-pr-reviewer` for a read-only PR/diff review. The other agents are routed by effort: `workflow-maintenance-tiny` (Haiku/low), `workflow-feature-normal` (Sonnet/medium), `workflow-systems-deep` (Sonnet/high), and `workflow-architecture-review` (Opus/xhigh).
+`ctk-init` is the one skill Claude may run on its own judgment, without being asked: the first time it works in a project that has this toolkit installed but whose `CLAUDE.md` doesn't yet reference `GUIDELINES.md`, it reads both files and proposes wiring the project in, consolidating duplicated generic rules and keeping project-specific ones. It still confirms before writing a non-trivial merge.
+
+Use `ctk-pr-reviewer` for a read-only PR/diff review. The other agents are routed by effort: `ctk-maintenance-tiny` (Haiku/low), `ctk-feature-normal` (Sonnet/medium), `ctk-systems-deep` (Sonnet/high), and `ctk-architecture-review` (Opus/xhigh).
 
 ## Shared working rules
 
@@ -55,6 +57,6 @@ Use `workflow-pr-reviewer` for a read-only PR/diff review. The other agents are 
 Shared working rules, effort routing, and milestone policy: `node_modules/@damian.diego/claude-toolkit/GUIDELINES.md`.
 ```
 
-(or `~/.config/claude-toolkit/GUIDELINES.md` for the standalone-clone / global path.) Keep each project's own rules in its root `CLAUDE.md`, limited to what is actually specific to that project. If a project uses milestones, add its own `docs/PROJECT_STATE.md`; `/workflow-checkpoint` will not create or alter application files automatically.
+(or `~/.config/claude-toolkit/GUIDELINES.md` for the standalone-clone / global path.) Keep each project's own rules in its root `CLAUDE.md`, limited to what is actually specific to that project. If a project uses milestones, add its own `docs/PROJECT_STATE.md`; `/ctk-checkpoint` will not create or alter application files automatically.
 
 No skill automatically compacts context, commits, pushes, rebases, opens PRs, or changes remote state.

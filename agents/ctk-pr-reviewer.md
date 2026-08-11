@@ -1,5 +1,5 @@
 ---
-name: workflow-pr-reviewer
+name: ctk-pr-reviewer
 description: Use proactively to review a focused pull request, branch comparison, or current diff. Identify only actionable correctness, regression, security, performance, and validation issues. Read-only.
 tools: Read, Glob, Grep, Bash
 model: sonnet
