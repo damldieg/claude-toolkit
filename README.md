@@ -40,6 +40,8 @@ To update: `git pull` inside the clone, then `./install.sh` again.
 
 Manual skills: `/workflow-checkpoint`, `/workflow-audit-context`, `/workflow-git-status`, `/workflow-commit`, `/workflow-push`, `/workflow-rebase`, and `/workflow-prepare-pr`.
 
+`workflow-init` is the one skill Claude may run on its own judgment, without being asked: the first time it works in a project that has this toolkit installed but whose `CLAUDE.md` doesn't yet reference `GUIDELINES.md`, it reads both files and proposes wiring the project in, consolidating duplicated generic rules and keeping project-specific ones. It still confirms before writing a non-trivial merge.
+
 Use `workflow-pr-reviewer` for a read-only PR/diff review. The other agents are routed by effort: `workflow-maintenance-tiny` (Haiku/low), `workflow-feature-normal` (Sonnet/medium), `workflow-systems-deep` (Sonnet/high), and `workflow-architecture-review` (Opus/xhigh).
 
 ## Shared working rules
