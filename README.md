@@ -8,6 +8,8 @@ Published as [`@damian.diego/claude-toolkit`](https://www.npmjs.com/package/@dam
 
 Both paths run the same installer (`bin/claude-toolkit.js`), which changes only `~/.claude/agents/workflow/` and `~/.claude/skills/workflow-*`. Before replacing a previous version, it moves that version into `~/.claude/workflow-backups/`. Restart Claude Code only when its `~/.claude/agents` or `~/.claude/skills` directory did not exist when the session started.
 
+npm 11+ and pnpm 10+ both block a new dependency's install-time scripts by default (unrelated supply-chain-security features, one per package manager) — the `postinstall` hook that syncs `~/.claude` may silently not run the first time until you approve it. See the per-tool notes below.
+
 ### Option A: per-project devDependency (recommended)
 
 Add it as a `devDependency`, so every `npm install`/`pnpm install` keeps `~/.claude` in sync automatically via a `postinstall` hook:
@@ -21,6 +23,8 @@ pnpm 10+ blocks dependency build scripts by default; if `postinstall` doesn't ru
 ```bash
 pnpm approve-builds
 ```
+
+Using plain `npm install` instead of pnpm, npm 11+ has its own equivalent gate — see the `allow-scripts` note under "CLI on your PATH" below; the same `npm config set allow-scripts=...` fix applies here too.
 
 To update: `pnpm add -D @damian.diego/claude-toolkit@latest` (plain `pnpm update` won't cross a `0.x` minor bump under semver's caret rules while this package is pre-1.0) — `postinstall` re-syncs `~/.claude` automatically. Run `npx claude-toolkit status` anytime to check whether the copy in `~/.claude` matches the version currently in `node_modules`.
 
@@ -44,6 +48,14 @@ Both `claude-toolkit` and the shorter `ctcli` alias resolve to the same binary. 
 npm install -g @damian.diego/claude-toolkit
 ctcli status
 ```
+
+npm 11+ blocks lifecycle scripts (including `postinstall`) for packages it hasn't seen approved, even for global installs; if you see an `allow-scripts` warning and `~/.claude` didn't get synced, approve this package once (persists in your user `~/.npmrc`, applies to future installs too):
+
+```bash
+npm config set allow-scripts=@damian.diego/claude-toolkit --location=user
+```
+
+or approve just the current install without persisting it: `npm install -g --allow-scripts=@damian.diego/claude-toolkit @damian.diego/claude-toolkit`. Either way, `ctcli update` always works as a manual fallback.
 
 ## Use
 
